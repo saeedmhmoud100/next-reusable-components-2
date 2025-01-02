@@ -35,7 +35,6 @@ export function TableBody() {
           {config.columns.map((column) => {
             const CustomCell = config.customComponents?.Cell?.[column.key];
             const value = row[column.key];
-
             return (
               <td
                 key={column.key}

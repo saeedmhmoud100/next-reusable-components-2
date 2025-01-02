@@ -14,7 +14,7 @@ export function generateEndpoint(name: string): string {
 }
 
 export function enhanceColumnConfig(column: Partial<ColumnConfig> & { name: string }): ColumnConfig {
-  const key = column.name.toLowerCase().replace(/\s+/g, '_');
+  const key = column.key || column.name.toLowerCase().replace(/\s+/g, '_');
   
   return {
     key,

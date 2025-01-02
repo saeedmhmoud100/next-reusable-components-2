@@ -15,7 +15,8 @@ const initialState: TableState = {
   sortBy: null,
   sortOrder: 'asc',
   searchTerm: '',
-  selectedRows: []
+  selectedRows: [],
+  isCached:false
 };
 
 function tableReducer(state: TableState, action: TableAction): TableState {
@@ -28,7 +29,8 @@ function tableReducer(state: TableState, action: TableAction): TableState {
         totalPages: action.payload.totalPages,
         total: action.payload.total,
         loading: false, 
-        error: null 
+        error: null,
+        isCached:true,
       };
     case 'SET_LOADING':
       return { ...state, loading: action.payload };
@@ -47,7 +49,7 @@ function tableReducer(state: TableState, action: TableAction): TableState {
       return { ...state, searchTerm: action.payload, page: 1 };
     case 'TOGGLE_ROW_SELECTION':
       const selectedRows = state.selectedRows.includes(action.payload)
-        ? state.selectedRows.filter(id => id !== action.payload)
+        ? state.selectedRows.filter((id: any) => id !== action.payload)
         : [...state.selectedRows, action.payload];
       return { ...state, selectedRows };
     default:

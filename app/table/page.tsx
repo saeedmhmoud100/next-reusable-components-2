@@ -21,6 +21,7 @@ const tableConfig = enhanceTableConfig({
     header: "bg-gray-50",
     row: "border-t border-gray-200 hover:bg-gray-50",
     cell: "px-6 py-4 text-sm",
+    pagination:"py-1"
   },
   columns: [
     {

@@ -18,12 +18,12 @@ export function TableSearch() {
 
   return (
     <div className="relative w-full max-w-sm">
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Search className="absolute top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" style={{left:"8px"}} />
       <Input
         placeholder="Search..."
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
-        className="pl-9"
+        className="px-8"
       />
     </div>
   );

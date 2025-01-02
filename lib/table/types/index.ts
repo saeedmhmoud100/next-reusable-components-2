@@ -13,12 +13,14 @@ export interface ValidationConfig {
 }
 
 export interface ColumnConfig {
-  key: string;
-  label: string;
+  key?: string;
+  name:string;
+  label?: string;
   type: ColumnType;
   sortable?: boolean;
   searchable?: boolean;
   editable?: boolean;
+  createEnabled?:boolean;
   required?: boolean;
   validation?: ValidationConfig;
   width?: string;
@@ -82,6 +84,7 @@ export interface TableState {
   sortOrder: 'asc' | 'desc';
   searchTerm: string;
   selectedRows: string[];
+  isCached:boolean;
 }
 
 export interface TableAction {

@@ -26,7 +26,7 @@ export function TablePagination() {
 
   return (
     <div className="mt-4 flex justify-center">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col-reverse items-center gap-1">
         <p className="text-sm text-muted-foreground w-[100px]">
           Page {page} of {totalPages}
         </p>
