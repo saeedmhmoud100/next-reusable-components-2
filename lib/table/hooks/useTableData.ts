@@ -6,14 +6,21 @@ import { useTable } from '../context';
 export function useTableData() {
   const { state, config, dispatch } = useTable();
 
+  const getEndpoint = useCallback((type: 'get' | 'create' | 'update' | 'delete') => {
+    const baseEndpoint = `/api/${config.endpoint}`;
+    return config.customEndpoints?.[type] || baseEndpoint;
+  }, [config.endpoint, config.customEndpoints]);
+
   const fetchData = useCallback(async () => {
+
     if(!state.isCached){
       dispatch({ type: 'SET_LOADING', payload: true });
     }
 
     try {
-      const response = await fetch('/api/products');
-      if (!response.ok) throw new Error('Failed to fetch products');
+      const endpoint = getEndpoint('get');
+      const response = await fetch(endpoint);
+      if (!response.ok) throw new Error('Failed to fetch data');
 
       let data = await response.json();
 
@@ -63,53 +70,61 @@ export function useTableData() {
         payload: error instanceof Error ? error : new Error('Failed to process data')
       });
     }
-  }, [config.columns, config.itemsPerPage, dispatch, state.page, state.searchTerm, state.sortBy, state.sortOrder]);
+  }, [config.columns, config.itemsPerPage, dispatch, state.page, state.searchTerm, state.sortBy, state.sortOrder, getEndpoint]);
 
-  const createProduct = useCallback(async (data: any) => {
+  const createItem = useCallback(async (data: any) => {
     try {
-      const response = await fetch('/api/products', {
+      const endpoint = getEndpoint('create');
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error('Failed to create product');
+      if (!response.ok) throw new Error('Failed to create item');
       await fetchData();
     } catch (error) {
-      console.error('Error creating product:', error);
+      console.error('Error creating item:', error);
     }
-  }, [fetchData]);
+  }, [fetchData, getEndpoint]);
 
-  const updateProduct = useCallback(async (id: number, data: any) => {
+  const updateItem = useCallback(async (id: number, data: any) => {
     try {
-      const response = await fetch('/api/products', {
+      const endpoint = getEndpoint('update');
+      const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, ...data }),
       });
-      if (!response.ok) throw new Error('Failed to update product');
+      if (!response.ok) throw new Error('Failed to update item');
       await fetchData();
     } catch (error) {
-      console.error('Error updating product:', error);
+      console.error('Error updating item:', error);
     }
-  }, [fetchData]);
+  }, [fetchData, getEndpoint]);
 
-  const deleteProduct = useCallback(async (id: number) => {
+  const deleteItem = useCallback(async (id: number) => {
     try {
-      const response = await fetch('/api/products', {
+      const endpoint = getEndpoint('delete');
+      const response = await fetch(endpoint, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id }),
       });
-      if (!response.ok) throw new Error('Failed to delete product');
+      if (!response.ok) throw new Error('Failed to delete item');
       await fetchData();
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('Error deleting item:', error);
     }
-  }, [fetchData]);
+  }, [fetchData, getEndpoint]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  return { refetch: fetchData, createProduct, updateProduct, deleteProduct };
+  return {
+    refetch: fetchData,
+    create: createItem,
+    update: updateItem,
+    delete: deleteItem
+  };
 }

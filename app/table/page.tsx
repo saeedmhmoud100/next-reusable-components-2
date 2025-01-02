@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 
 const tableConfig = enhanceTableConfig({
   name: "product",
-  title: "Products",
   endpoint: "products",
   itemsPerPage: 10,
   searchEnabled: true,

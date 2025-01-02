@@ -11,14 +11,14 @@ import { DynamicForm } from "../DynamicForm";
 export function UpdateDialog({ row }: { row: any }) {
   const [open, setOpen] = useState(false);
   const { config } = useTable();
-  const { updateProduct } = useTableData();
+  const { update } = useTableData();
 
   const editableColumns = config.columns.filter(col =>
       col.editable !== false && col.key !== 'id'
   );
 
   const handleUpdate = async (data: any) => {
-    await updateProduct(row.id, data);
+    await update(row.id, data);
     setOpen(false);
   };
 

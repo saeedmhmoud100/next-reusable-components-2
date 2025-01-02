@@ -20,7 +20,7 @@ import { useTableData } from "../../hooks/useTableData";
 export function DeleteDialog({ row }: { row: any }) {
   const [open, setOpen] = useState(false);
   const { config } = useTable();
-  const { deleteProduct } = useTableData();
+  const { delete:deleteProduct } = useTableData();
 
   const handleDelete = async () => {
     await deleteProduct(row.id);

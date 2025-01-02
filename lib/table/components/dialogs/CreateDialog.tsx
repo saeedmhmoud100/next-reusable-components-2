@@ -11,14 +11,14 @@ import { DynamicForm } from "../DynamicForm";
 export function CreateDialog() {
   const [open, setOpen] = useState(false);
   const { config } = useTable();
-  const { createProduct } = useTableData();
+  const { create } = useTableData();
 
   const editableColumns = config.columns.filter(col =>
       col.createEnabled !== false && col.key !== 'id'
   );
 
   const handleCreate = async (data: any) => {
-    await createProduct(data);
+    await create(data);
     setOpen(false);
   };
 

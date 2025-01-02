@@ -13,11 +13,16 @@ export function generateEndpoint(name: string): string {
   return `${name.toLowerCase()}s`;
 }
 
+export function generatePolar(name: string): string {
+  return `${name.toLowerCase()}s`;
+}
+
 export function enhanceColumnConfig(column: Partial<ColumnConfig> & { name: string }): ColumnConfig {
   const key = column.key || column.name.toLowerCase().replace(/\s+/g, '_');
   
   return {
     key,
+    name:column.name,
     label: column.label || generateLabel(key),
     type: column.type || 'text',
     sortable: column.sortable ?? true,
@@ -33,7 +38,7 @@ export function enhanceColumnConfig(column: Partial<ColumnConfig> & { name: stri
 }
 
 export function enhanceTableConfig(config: Partial<TableConfig> & { name: string }): TableConfig {
-  const name = config.name.toLowerCase();
+  const name = generatePolar(config.name.toLowerCase());
   const title = config.title || generateLabel(name);
   const endpoint = config.endpoint || generateEndpoint(name);
 
