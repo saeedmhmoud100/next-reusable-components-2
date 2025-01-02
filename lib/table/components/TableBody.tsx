@@ -4,7 +4,7 @@ import { useTable } from '../context';
 import { cn } from '@/lib/utils';
 import { TableRowActions } from './TableRowActions';
 
-export function TableBody() {
+export function TableBody({updateItem,deleteItem}) {
   const { state, config } = useTable();
 
   if (state.data.length === 0) {
@@ -54,7 +54,7 @@ export function TableBody() {
             );
           })}
           <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
-            <TableRowActions row={row} />
+            <TableRowActions row={row} updateItem={updateItem} deleteItem={deleteItem}/>
           </td>
         </tr>
       ))}

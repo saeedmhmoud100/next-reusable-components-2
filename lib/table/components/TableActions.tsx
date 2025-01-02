@@ -1,14 +1,23 @@
 "use client";
 
-import { CreateDialog } from './dialogs/CreateDialog';
-import { useTable } from '../context';
 import { TableSearch } from './TableSearch';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useTable } from '../context';
+import { CrudDialog } from './dialogs/CrudDialog';
+import {useState} from "react";
 
-export function TableActions() {
+export function TableActions({create}:{create:(data:any)=>{}}) {
   const { state, config, dispatch } = useTable();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleSearch = (value: string) => {
     dispatch({ type: 'SET_SEARCH', payload: value });
+  };
+
+  const handleCreate = async (data: any) => {
+    await create(data);
+    setDialogOpen(false);
   };
 
   return (
@@ -21,7 +30,25 @@ export function TableActions() {
           {config.searchEnabled && (
             <TableSearch />
           )}
-          {config.createEnabled && <CreateDialog />}
+          {config.createEnabled && (
+              <>
+                <Button
+                    className="flex items-center gap-2"
+                    onClick={() => setDialogOpen(true)}
+                >
+                  <Plus className="h-4 w-4" />
+                  Add {config.name}
+                </Button>
+                <CrudDialog
+                    type={config.dialogType || 'modal'}
+                    isOpen={dialogOpen}
+                    onClose={() => setDialogOpen(false)}
+                    config={config}
+                    operation={{ type: 'create' }}
+                    onSubmit={handleCreate}
+                />
+              </>
+          )}
         </div>
       </div>
     </div>

@@ -13,14 +13,15 @@ const tableConfig = enhanceTableConfig({
   createEnabled: true,
   updateEnabled: true,
   deleteEnabled: true,
-  dialogType: "modal",
+  dialogType: "sidebar",
   booleanInputType: "switch",
   styles: {
     table: "w-full border-collapse bg-white",
     header: "bg-gray-50",
     row: "border-t border-gray-200 hover:bg-gray-50",
     cell: "px-6 py-4 text-sm",
-    pagination:"py-1"
+    pagination:"py-1",
+    dialog:"w-[50%]"
   },
   columns: [
     {

@@ -59,7 +59,7 @@ export interface TableConfig {
     DialogTitle?: Record<OperationType, ReactNode>;
     CreateForm?: ComponentType;
     UpdateForm?: ComponentType;
-    DeleteConfirm?: ComponentType;
+    DeleteConfirm?: ComponentType<{onCancel: (value: any) => void,onConfirm?: (value: any) => void}>;
   };
   styles?: {
     table?: string;

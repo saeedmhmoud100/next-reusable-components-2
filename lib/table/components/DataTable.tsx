@@ -14,7 +14,7 @@ import { useTableData } from '../hooks/useTableData';
 
 function DataTableContent({ className }: { className?: string }) {
   const { state, config } = useTable();
-  useTableData();
+  const {create,update:updateItem,delete:deleteItem} = useTableData();
 
   if (state.loading) {
     return (
@@ -37,12 +37,12 @@ function DataTableContent({ className }: { className?: string }) {
   return (
     <Card className={cn("overflow-auto", className)}>
       <div className="p-6">
-        <TableActions />
+        <TableActions create={create}/>
       </div>
       <div className="rounded-md border">
         <table className={cn("w-full", config.styles?.table)}>
           <TableHeader />
-          <TableBody />
+          <TableBody updateItem={updateItem} deleteItem={deleteItem}/>
         </table>
       </div>
       <div className="p-6">
