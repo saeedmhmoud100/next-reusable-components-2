@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useTable } from '../context';
-import { useTableData } from '../hooks/useTableData';
 import { Button } from '@/components/ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
 import { CrudDialog } from './dialogs/CrudDialog';

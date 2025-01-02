@@ -1,4 +1,5 @@
 import { ReactNode, ComponentType } from 'react';
+import {TableOperations} from "@/lib/table/types/operations";
 
 export type DialogType = 'sidebar' | 'modal';
 export type OperationType = 'create' | 'update' | 'delete';
@@ -71,6 +72,8 @@ export interface TableConfig {
     dialog?: string;
   };
   onRowClick?: (row: any) => void;
+
+  operations?: TableOperations;
 }
 
 export interface TableState {

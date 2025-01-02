@@ -10,11 +10,13 @@ import { TableProvider } from '../context';
 import { TableConfig } from '../types';
 import { cn } from '@/lib/utils';
 import { Card } from "@/components/ui/card";
-import { useTableData } from '../hooks/useTableData';
+import {useTableOperations} from "@/lib/table/hooks/useTableOperations";
+import {useTableData} from "@/lib/table/hooks";
 
 function DataTableContent({ className }: { className?: string }) {
   const { state, config } = useTable();
-  const {create,update:updateItem,delete:deleteItem} = useTableData();
+  const {create,update:updateItem,delete:deleteItem} = useTableOperations();
+  // const {create,update:updateItem,delete:deleteItem} = useTableData();
 
   if (state.loading) {
     return (
