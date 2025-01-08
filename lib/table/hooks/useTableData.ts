@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useCallback } from 'react';
-import { useTable } from '../context';
+import { useTableContext } from '../context';
 
 export function useTableData() {
-  const { state, config, dispatch } = useTable();
+  const { state, config, dispatch } = useTableContext();
 
   const getEndpoint = useCallback((type: 'get' | 'create' | 'update' | 'delete') => {
     const baseEndpoint = `/api/${config.endpoint}`;

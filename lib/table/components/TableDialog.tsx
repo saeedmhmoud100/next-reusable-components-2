@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Plus, Pencil, Trash2 } from "lucide-react";
-import { useTable } from '../context';
+import { useTableContext } from '../context';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -22,7 +22,7 @@ interface TableDialogProps {
 
 export function TableDialog({ type, row }: TableDialogProps) {
   const [open, setOpen] = useState(false);
-  const { config } = useTable();
+  const { config } = useTableContext();
 
   const handleAction = async (data?: any) => {
     setOpen(false);

@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from 'react';
-import { useTable } from '../context';
-import { useTableOperations } from '../hooks/useTableOperations';
+import { useTableContext } from '../context';
 import { Button } from '@/components/ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
 import { CrudDialog } from './dialogs/CrudDialog';
 import { LoadingSpinner } from './LoadingSpinner';
+import {useTableHook} from "@/lib/table/hooks";
 
 export function TableRowActions({ row }: { row: any }) {
   const [operation, setOperation] = useState<{ type: 'update' | 'delete', isOpen: boolean }>({
@@ -14,8 +14,8 @@ export function TableRowActions({ row }: { row: any }) {
     isOpen: false
   });
 
-  const { config } = useTable();
-  const { update, delete: deleteItem, operationLoading } = useTableOperations();
+  const { config } = useTableContext();
+  const { update, delete: deleteItem, operationLoading } = useTableHook();
 
   // Check permissions
   const canUpdate = config.permissions?.update && config.updateEnabled;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTable } from '../context';
+import { useTableContext } from '../context';
 import {
   Pagination,
   PaginationContent,
@@ -14,7 +14,7 @@ import { getVisiblePages } from '../utils/paginationUtils';
 import {useEffect, useState} from "react";
 
 export function TablePagination() {
-  const { state, config, dispatch } = useTable();
+  const { state, config, dispatch } = useTableContext();
   const { page, totalPages, total } = state;
   const paginationConfig = config.pagination;
   const [isClient, setIsClient] = useState(false)

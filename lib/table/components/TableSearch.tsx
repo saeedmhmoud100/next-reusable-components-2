@@ -1,14 +1,13 @@
 "use client";
 
-import { useTable } from '../context';
+import { useTableContext } from '../context';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useDebounce } from '../hooks/useDebounce';
+import { useDebounce } from '@/lib/table/hooks';
 import { useEffect, useState } from 'react';
 
 export function TableSearch() {
-  const { state, dispatch } = useTable();
+  const { state, dispatch } = useTableContext();
   const [searchValue, setSearchValue] = useState(state.searchTerm);
   const debouncedSearch = useDebounce(searchValue, 300);
 

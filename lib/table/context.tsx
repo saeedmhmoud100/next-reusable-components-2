@@ -67,7 +67,7 @@ export function TableProvider({ children, config }: { children: ReactNode; confi
   );
 }
 
-export function useTable() {
+export function useTableContext() {
   const context = useContext(TableContext);
   if (!context) {
     throw new Error('useTable must be used within a TableProvider');

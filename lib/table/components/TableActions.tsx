@@ -3,16 +3,16 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useTable } from '../context';
-import { useTableOperations } from '../hooks/useTableOperations';
+import { useTableContext } from '../context';
 import { TableSearch } from './TableSearch';
 import { CrudDialog } from './dialogs/CrudDialog';
 import { LoadingSpinner } from './LoadingSpinner';
+import {useTableHook} from "@/lib/table/hooks";
 
 export function TableActions() {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { config, dispatch } = useTable();
-  const { create, operationLoading } = useTableOperations();
+  const { config, dispatch } = useTableContext();
+  const { create, operationLoading } = useTableHook();
 
   const handleSearch = (value: string) => {
     dispatch({ type: 'SET_SEARCH', payload: value });

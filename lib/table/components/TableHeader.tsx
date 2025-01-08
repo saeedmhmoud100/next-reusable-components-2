@@ -1,12 +1,12 @@
 "use client";
 
-import { useTable } from '../context';
+import { useTableContext } from '../context';
 import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 export function TableHeader() {
-  const { state, config, dispatch } = useTable();
+  const { state, config, dispatch } = useTableContext();
 
   const handleSort = (column: string) => {
     if (!config.sortEnabled) return;

@@ -1,11 +1,11 @@
 "use client";
 
-import { useTable } from '../context';
+import { useTableContext } from '../context';
 import { cn } from '@/lib/utils';
 import { TableRowActions } from './TableRowActions';
 
 export function TableBody() {
-  const { state, config } = useTable();
+  const { state, config } = useTableContext();
   console.log(config.permissions)
   if (state.data.length === 0) {
     return (

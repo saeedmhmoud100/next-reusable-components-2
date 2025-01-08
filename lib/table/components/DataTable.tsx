@@ -1,6 +1,6 @@
 "use client";
 
-import { useTable } from '../context';
+import { useTableContext } from '../context';
 import { TableHeader } from './TableHeader';
 import { TableBody } from './TableBody';
 import { TablePagination } from './TablePagination';
@@ -13,7 +13,7 @@ import { Card } from "@/components/ui/card";
 import { LoadingSpinner } from './LoadingSpinner';
 
 function DataTableContent({ className }: { className?: string }) {
-    const { state, config } = useTable();
+    const { state, config } = useTableContext();
 
     // Check read permission
     if (config.permissions?.read === false) {

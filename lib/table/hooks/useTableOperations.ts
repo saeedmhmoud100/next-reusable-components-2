@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useCallback, useState, useRef } from 'react';
-import { useTable } from '../context';
+import { useTableContext } from '../context';
 import { TableOperations } from '../types/operations';
 
 export function useTableOperations() {
-    const { state, config, dispatch } = useTable();
+    const { state, config, dispatch } = useTableContext();
     const [operationLoading, setOperationLoading] = useState<string | null>(null);
     const isMounted = useRef(true);
 

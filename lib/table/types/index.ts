@@ -48,6 +48,16 @@ export interface TablePermissions {
   delete?: boolean;
 }
 
+export interface TableStyles {
+  table?: string;
+  header?: string;
+  row?: string;
+  cell?: string;
+  pagination?: string;
+  dialog?: string;
+  search?: string;
+}
+
 export interface TableConfig {
   title: string;
   name: string;
@@ -80,17 +90,9 @@ export interface TableConfig {
     UpdateForm?: ComponentType;
     DeleteConfirm?: ComponentType<{onCancel: (value: any) => void,onConfirm?: (value: any) => void}>;
   };
-  styles?: {
-    table?: string;
-    header?: string;
-    row?: string;
-    cell?: string;
-    pagination?: string;
-    search?: string;
-    dialog?: string;
-  };
   onRowClick?: (row: any) => void;
 
+  styles?: TableStyles;
   operations?: TableOperations;
 
   pagination?: TablePaginationConfig;
