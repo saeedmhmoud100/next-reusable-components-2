@@ -28,6 +28,6 @@ export interface TableOperations<T = any> {
     paginate?: (data: T[], page: number, itemsPerPage: number) => {
         data: T[];
         total: number;
-        totalPages: number;
+        totalPages?: number;
     };
 }

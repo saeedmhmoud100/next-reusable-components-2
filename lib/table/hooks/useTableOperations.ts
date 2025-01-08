@@ -1,46 +1,50 @@
 "use client";
 
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useTable } from '../context';
 import { TableOperations } from '../types/operations';
 
 export function useTableOperations() {
     const { state, config, dispatch } = useTable();
     const [operationLoading, setOperationLoading] = useState<string | null>(null);
+    const dataCache = useRef<any[]>([]);
+    const isMounted = useRef(true);
 
     const getEndpoint = useCallback((type: 'get' | 'create' | 'update' | 'delete') => {
         const baseEndpoint = `/api/${config.endpoint}`;
         return config.customEndpoints?.[type] || baseEndpoint;
     }, [config.endpoint, config.customEndpoints]);
 
-    // Default operations implementation
     const defaultOperations: TableOperations = {
         fetch: async ({ page, searchTerm, sortBy, sortOrder }) => {
             const endpoint = getEndpoint('get');
             const response = await fetch(endpoint);
             if (!response.ok) throw new Error('Failed to fetch data');
-            const data = await response.json();
+            const rawData = await response.json();
 
-            // Process data in chunks to prevent UI blocking
+            // Store raw data in cache
+            dataCache.current = rawData;
+
+            // Process data in a web worker or async to prevent UI blocking
             return new Promise((resolve) => {
-                setTimeout(() => {
-                    let processedData = [...data];
+                queueMicrotask(() => {
+                    let processedData = [...rawData];
 
-                    if (searchTerm && !config.operations?.search) {
+                    if (searchTerm) {
                         processedData = defaultOperations.search!(searchTerm, processedData);
                     }
 
-                    if (sortBy && !config.operations?.sort) {
+                    if (sortBy) {
                         processedData = defaultOperations.sort!(processedData, sortBy, sortOrder || 'asc');
                     }
 
-                    if (!config.operations?.paginate) {
-                        const result = defaultOperations.paginate!(processedData, page, config.itemsPerPage || 10);
-                        resolve({ data: result.data, total: result.total });
-                    } else {
-                        resolve({ data: processedData, total: processedData.length });
-                    }
-                }, 0);
+                    const total = processedData.length;
+                    const itemsPerPage = config.itemsPerPage || 10;
+                    const start = (page - 1) * itemsPerPage;
+                    const paginatedData = processedData.slice(start, start + itemsPerPage);
+
+                    resolve({ data: paginatedData, total });
+                });
             });
         },
 
@@ -101,28 +105,19 @@ export function useTableOperations() {
 
         paginate: (data, page, itemsPerPage) => {
             const total = data.length;
-            const totalPages = Math.ceil(total / itemsPerPage);
             const start = (page - 1) * itemsPerPage;
             const paginatedData = data.slice(start, start + itemsPerPage);
-
-            return {
-                data: paginatedData,
-                total,
-                totalPages,
-            };
+            return { data: paginatedData, total };
         },
     };
 
-    // Merge custom operations with defaults
     const operations = {
         ...defaultOperations,
         ...config.operations,
     };
 
     const fetchData = useCallback(async () => {
-        if (!state.isCached) {
-            dispatch({ type: 'SET_LOADING', payload: true });
-        }
+        if (!isMounted.current) return;
 
         try {
             const result = await operations.fetch!({
@@ -132,8 +127,7 @@ export function useTableOperations() {
                 sortOrder: state.sortOrder,
             });
 
-            // Use requestAnimationFrame for smoother state updates
-            requestAnimationFrame(() => {
+            if (isMounted.current) {
                 dispatch({
                     type: 'SET_DATA',
                     payload: {
@@ -143,47 +137,55 @@ export function useTableOperations() {
                         total: result.total,
                     },
                 });
-            });
+            }
         } catch (error) {
-            dispatch({
-                type: 'SET_ERROR',
-                payload: error instanceof Error ? error : new Error('Failed to fetch data'),
-            });
+            if (isMounted.current) {
+                dispatch({
+                    type: 'SET_ERROR',
+                    payload: error instanceof Error ? error : new Error('Failed to fetch data'),
+                });
+            }
         }
-    }, [operations, state.page, state.searchTerm, state.sortBy, state.sortOrder, config.itemsPerPage, dispatch, state.isCached]);
+    }, [operations, state.page, state.searchTerm, state.sortBy, state.sortOrder, config.itemsPerPage, dispatch]);
 
     const wrapOperation = useCallback(async (operation: string, fn: () => Promise<void>) => {
         setOperationLoading(operation);
         try {
             await fn();
         } finally {
-            setOperationLoading(null);
+            if (isMounted.current) {
+                setOperationLoading(null);
+            }
         }
     }, []);
 
     const createItem = useCallback(async (data: any) => {
         await wrapOperation('create', async () => {
-            await operations.create!(data);
+            await operations!.create!(data);
             await fetchData();
         });
     }, [operations, fetchData, wrapOperation]);
 
     const updateItem = useCallback(async (id: number | string, data: any) => {
         await wrapOperation('update', async () => {
-            await operations.update!(id, data);
+            await operations!.update!(id, data);
             await fetchData();
         });
     }, [operations, fetchData, wrapOperation]);
 
     const deleteItem = useCallback(async (id: number | string) => {
         await wrapOperation('delete', async () => {
-            await operations.delete!(id);
+            await operations!.delete!(id);
             await fetchData();
         });
     }, [operations, fetchData, wrapOperation]);
 
     useEffect(() => {
+        isMounted.current = true;
         fetchData();
+        return () => {
+            isMounted.current = false;
+        };
     }, [fetchData]);
 
     return {
