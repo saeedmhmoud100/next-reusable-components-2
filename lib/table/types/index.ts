@@ -30,6 +30,17 @@ export interface ColumnConfig {
   step?: number;
 }
 
+
+export interface TablePaginationConfig {
+  enabled?: boolean;
+  dataKey?: string;
+  paginationKey?: string;
+  pageKey?: string;
+  totalPagesKey?: string;
+  totalItemsKey?: string;
+  itemsPerPageKey?: string;
+}
+
 export interface TableConfig {
   title: string;
   name: string;
@@ -74,6 +85,9 @@ export interface TableConfig {
   onRowClick?: (row: any) => void;
 
   operations?: TableOperations;
+
+  pagination?: TablePaginationConfig;
+
 }
 
 export interface TableState {

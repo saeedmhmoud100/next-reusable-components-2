@@ -1,6 +1,6 @@
 "use client";
 
-import { ColumnConfig, TableConfig } from '../types';
+import {ColumnConfig, TableConfig, TablePaginationConfig} from '../types';
 
 export function generateLabel(key: string): string {
   return key
@@ -42,6 +42,16 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
   const title = config.title || generateLabel(name);
   const endpoint = config.endpoint || generateEndpoint(name);
 
+  const defaultPagination: TablePaginationConfig = {
+    enabled: true,
+    dataKey: 'data',
+    paginationKey: 'pagination',
+    pageKey: 'current_page',
+    totalPagesKey: 'total_pages',
+    totalItemsKey: 'total_items',
+    itemsPerPageKey: 'items_per_page'
+  };
+
   return {
     name,
     title,
@@ -58,12 +68,15 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
     dialogType: config.dialogType || 'modal',
     booleanInputType: config.booleanInputType || 'switch',
     customComponents: config.customComponents || {},
+    pagination: {
+      ...defaultPagination,
+      ...config.pagination
+    },
     styles: {
       table: "min-w-full bg-white rounded-lg overflow-hidden",
       header: "bg-gray-100",
       row: "hover:bg-gray-50 transition-colors",
       cell: "p-4",
-      pagination: "bg-white border-t p-4",
       search: "w-full max-w-sm",
       dialog: "sm:max-w-[425px]",
       ...config.styles

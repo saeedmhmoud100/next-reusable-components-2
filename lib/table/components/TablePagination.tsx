@@ -11,24 +11,45 @@ import {
 } from "@/components/ui/pagination";
 import { cn } from '@/lib/utils';
 import { getVisiblePages } from '../utils/paginationUtils';
+import {useEffect, useState} from "react";
 
 export function TablePagination() {
   const { state, config, dispatch } = useTable();
-  const { page, totalPages } = state;
+  const { page, totalPages, total } = state;
+  const paginationConfig = config.pagination;
+  const [isClient, setIsClient] = useState(false)
 
-  if (totalPages <= 1) return null;
+  useEffect(() => {
+    if(!isClient)
+      setIsClient(true)
+  }, [isClient]);
+
+  if (!paginationConfig?.enabled || !isClient) return null;
 
   const handlePageChange = (newPage: number) => {
-    dispatch({ type: 'SET_PAGE', payload: newPage });
+    if (newPage >= 1 && newPage <= totalPages) {
+      dispatch({ type: 'SET_PAGE', payload: newPage });
+    }
   };
 
   const visiblePages = getVisiblePages(page, totalPages);
+  const itemsPerPage = config.itemsPerPage || 10;
+
+  // Only calculate and show range if we have total items
+  const showRange = typeof total !== 'undefined';
+  const start = showRange ? ((page - 1) * itemsPerPage) + 1 : null;
+  const end = showRange ? Math.min(page * itemsPerPage, total) : null;
+
 
   return (
     <div className="mt-4 flex justify-center">
       <div className="flex flex-col-reverse items-center gap-1">
-        <p className="text-sm text-muted-foreground w-[100px]">
-          Page {page} of {totalPages}
+        <p className="text-sm text-muted-foreground">
+          {showRange && (
+              <div className="text-sm text-muted-foreground">
+                Showing {start} to {end} of {total} results
+              </div>
+          )}
         </p>
         <Pagination className={cn(config.styles?.pagination)}>
           <PaginationContent>
