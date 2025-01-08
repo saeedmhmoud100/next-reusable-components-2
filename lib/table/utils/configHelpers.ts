@@ -53,10 +53,11 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
   };
 
   return {
+    ...config,
     name,
     title,
     endpoint,
-    columns: config.columns?.map(col => 
+    columns: config.columns?.map(col =>
       'name' in col ? enhanceColumnConfig(col) : col
     ) || [],
     itemsPerPage: config.itemsPerPage || 10,
@@ -68,9 +69,12 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
     dialogType: config.dialogType || 'modal',
     booleanInputType: config.booleanInputType || 'switch',
     customComponents: config.customComponents || {},
-    pagination: {
+      pagination: {
       ...defaultPagination,
       ...config.pagination
+    },
+    permissions:{
+      read:true,
     },
     styles: {
       table: "min-w-full bg-white rounded-lg overflow-hidden",
@@ -80,6 +84,6 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
       search: "w-full max-w-sm",
       dialog: "sm:max-w-[425px]",
       ...config.styles
-    }
+    },
   };
 }

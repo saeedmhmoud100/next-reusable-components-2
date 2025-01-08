@@ -4,9 +4,8 @@ import { useTable } from '../context';
 import { cn } from '@/lib/utils';
 import { TableRowActions } from './TableRowActions';
 
-export function TableBody({updateItem,deleteItem}) {
+export function TableBody() {
   const { state, config } = useTable();
-
   if (state.data.length === 0) {
     return (
       <tbody>
@@ -33,8 +32,8 @@ export function TableBody({updateItem,deleteItem}) {
           )}
         >
           {config.columns.map((column) => {
-            const CustomCell = config.customComponents?.Cell?.[column.key];
-            const value = row[column.key];
+            const CustomCell = config.customComponents?.Cell?.[column.key!];
+            const value = row[column.key!];
             return (
               <td
                 key={column.key}
@@ -53,9 +52,12 @@ export function TableBody({updateItem,deleteItem}) {
               </td>
             );
           })}
-          <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
-            <TableRowActions row={row} updateItem={updateItem} deleteItem={deleteItem}/>
-          </td>
+          {
+            (config.permissions?.update || config.permissions?.delete) && (
+                  <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
+                    <TableRowActions row={row}/>
+                  </td>)
+          }
         </tr>
       ))}
     </tbody>

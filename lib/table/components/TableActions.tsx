@@ -1,15 +1,18 @@
 "use client";
 
-import { TableSearch } from './TableSearch';
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTable } from '../context';
+import { useTableOperations } from '../hooks/useTableOperations';
+import { TableSearch } from './TableSearch';
 import { CrudDialog } from './dialogs/CrudDialog';
-import {useState} from "react";
+import { LoadingSpinner } from './LoadingSpinner';
 
-export function TableActions({create}:{create:(data:any)=>{}}) {
-  const { state, config, dispatch } = useTable();
+export function TableActions() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { config, dispatch } = useTable();
+  const { create, operationLoading } = useTableOperations();
 
   const handleSearch = (value: string) => {
     dispatch({ type: 'SET_SEARCH', payload: value });
@@ -20,37 +23,44 @@ export function TableActions({create}:{create:(data:any)=>{}}) {
     setDialogOpen(false);
   };
 
+  // Check create permission
+  const canCreate = config.permissions?.create && config.createEnabled;
+  console.log(canCreate)
+  console.log(config.permissions)
   return (
-    <div className="mb-6 ">
-      <div className="flex sm:items-center flex-col gap-8 mb-8 justify-between my-8">
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-900">{config.title}</h2>
-        </div>
-        <div className="mt-4 sm:mt-0 flex items-center justify-between gap-4 my-8">
-          {config.searchEnabled && (
-            <TableSearch />
-          )}
-          {config.createEnabled && (
-              <>
-                <Button
-                    className="flex items-center gap-2"
-                    onClick={() => setDialogOpen(true)}
-                >
-                  <Plus className="h-4 w-4" />
-                  Add {config.name}
-                </Button>
-                <CrudDialog
-                    type={config.dialogType || 'modal'}
-                    isOpen={dialogOpen}
-                    onClose={() => setDialogOpen(false)}
-                    config={config}
-                    operation={{ type: 'create' }}
-                    onSubmit={handleCreate}
-                />
-              </>
-          )}
+      <div className="mb-6">
+        <div className="flex sm:items-center flex-col gap-8 mb-8 justify-between my-8">
+          <div style={{marginBottom:"20px"}}>
+            <h2 className="text-2xl font-semibold text-gray-900">{config.title}</h2>
+          </div>
+          <div className="mt-4 sm:mt-0 flex items-center justify-between gap-4 my-8">
+            {config.searchEnabled && <TableSearch />}
+            {canCreate && (
+                <>
+                  <Button
+                      className="flex items-center gap-2 min-w-[120px] justify-center"
+                      onClick={() => setDialogOpen(true)}
+                      disabled={operationLoading === 'create'}
+                  >
+                    {operationLoading === 'create' ? (
+                        <LoadingSpinner size="sm" />
+                    ) : (
+                        <Plus className="h-4 w-4" />
+                    )}
+                    Add {config.name}
+                  </Button>
+                  <CrudDialog
+                      type={config.dialogType || 'modal'}
+                      isOpen={dialogOpen}
+                      onClose={() => setDialogOpen(false)}
+                      config={config}
+                      operation={{ type: 'create' }}
+                      onSubmit={handleCreate}
+                  />
+                </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
   );
 }

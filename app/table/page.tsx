@@ -23,6 +23,12 @@ const tableConfig = enhanceTableConfig({
     pagination:"bg-white border-t p-4 flex-col-reverse",
     dialog:"w-[50%]"
   },
+  permissions: {
+    create: true,
+    read: true,
+    update: true,
+    delete: true
+  },
   columns: [
     {
       name: "id",

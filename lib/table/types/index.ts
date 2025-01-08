@@ -41,6 +41,13 @@ export interface TablePaginationConfig {
   itemsPerPageKey?: string;
 }
 
+export interface TablePermissions {
+  create?: boolean;
+  read?: boolean;
+  update?: boolean;
+  delete?: boolean;
+}
+
 export interface TableConfig {
   title: string;
   name: string;
@@ -87,6 +94,7 @@ export interface TableConfig {
   operations?: TableOperations;
 
   pagination?: TablePaginationConfig;
+  permissions?: TablePermissions;
 
 }
 

@@ -30,7 +30,7 @@ export function TableHeader() {
           >
             {column.sortable && config.sortEnabled ? (
               <button
-                onClick={() => handleSort(column.key)}
+                onClick={() => handleSort(column.key!)}
                 className="group inline-flex items-center space-x-1 hover:text-gray-700"
               >
                 <span>{column.label}</span>
@@ -47,9 +47,14 @@ export function TableHeader() {
             )}
           </th>
         ))}
-        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-          Actions
-        </th>
+        {
+            (config.permissions?.update || config.permissions?.delete) && (
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+            )
+
+        }
       </tr>
     </thead>
   );
