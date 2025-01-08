@@ -6,7 +6,6 @@ import { TableRowActions } from './TableRowActions';
 
 export function TableBody() {
   const { state, config } = useTableContext();
-  console.log(config.permissions)
   if (state.data.length === 0) {
     return (
       <tbody>

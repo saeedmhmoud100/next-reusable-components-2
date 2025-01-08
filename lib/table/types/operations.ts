@@ -1,5 +1,13 @@
 "use client";
 
+export type OperationType = 'fetch' | 'create' | 'update' | 'delete';
+
+export interface LoadingState {
+    fetch: boolean;
+    create: boolean;
+    update: boolean;
+    delete: boolean;
+}
 export interface TableOperations<T = any> {
     // Data fetching
     fetch?: (params: {

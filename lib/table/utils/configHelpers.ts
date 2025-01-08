@@ -6,7 +6,7 @@ export function generateLabel(key: string): string {
   return key
     .split('_')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .join(' ') + 's';
 }
 
 export function generateEndpoint(name: string): string {
@@ -39,8 +39,8 @@ export function enhanceColumnConfig(column: Partial<ColumnConfig> & { name: stri
 
 export function enhanceTableConfig(config: Partial<TableConfig> & { name: string }): TableConfig {
   const name = generatePolar(config.name.toLowerCase());
-  const title = config.title || generateLabel(name);
-  const endpoint = config.endpoint || generateEndpoint(name);
+  const title = config.title || generateLabel(config.name);
+  const endpoint = config.endpoint || generateEndpoint(config.name);
 
   const defaultPagination: TablePaginationConfig = {
     enabled: true,

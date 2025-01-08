@@ -87,6 +87,51 @@ const productsTableConfig = enhanceTableConfig({
             update: "Edit Product",
             delete: "Remove Product"
         }
+    },
+    actions: {
+        // Custom fetch implementation
+        fetch: async (endpoint, { page, searchTerm, sortBy, sortOrder }) => {
+            const params = new URLSearchParams({
+                page: page.toString(),
+                search: searchTerm || '',
+            });
+
+            const response = await fetch(`${endpoint}?${params}`);
+            const result = await response.json();
+            return result
+        },
+
+        create: async (data, endpoint) => {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            return response.json();
+        },
+
+        // Custom update implementation
+        update: async (id, data, endpoint) => {
+            const response = await fetch(`${endpoint}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            return response.json();
+        },
+
+        // Custom delete implementation
+        delete: async (id, endpoint) => {
+            await fetch(`${endpoint}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                }
+            });
+        }
     }
 });
 

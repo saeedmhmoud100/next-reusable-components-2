@@ -1,8 +1,7 @@
 import { ReactNode, ComponentType } from 'react';
-import {TableOperations} from "@/lib/table/types/operations";
+import {OperationType, TableOperations} from "@/lib/table/types/operations";
 
 export type DialogType = 'sidebar' | 'modal';
-export type OperationType = 'create' | 'update' | 'delete';
 export type ColumnType = 'text' | 'number' | 'boolean' | 'date' | 'select' | 'custom';
 
 export interface ValidationConfig {
@@ -58,6 +57,27 @@ export interface TableStyles {
   search?: string;
 }
 
+export interface TableActions {
+  fetch?: (endpoint: string, params: {
+    page: number;
+    searchTerm?: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+  }) => Promise<{
+    data: any[];
+    pagination?: {
+      current_page: number;
+      total_pages: number;
+      total_items: number;
+      items_per_page: number;
+    };
+  }>;
+  create?: (data: any,endpoint: string) => Promise<any>;
+  update?: (id: number | string, data: any,endpoint: string) => Promise<any>;
+  delete?: (id: number | string,endpoint: string) => Promise<any>;
+}
+
+
 export interface TableConfig {
   title: string;
   name: string;
@@ -85,11 +105,12 @@ export interface TableConfig {
     Footer?: ComponentType;
     Cell?: Record<string, ComponentType<{ value: any; row: any }>>;
     Input?: Record<string, ComponentType<{ value: any; onChange: (value: any) => void; column: ColumnConfig }>>;
-    DialogTitle?: Record<OperationType, ReactNode>;
+    DialogTitle?: Record<Omit<OperationType, "fetch">, ReactNode>;
     CreateForm?: ComponentType;
     UpdateForm?: ComponentType;
     DeleteConfirm?: ComponentType<{onCancel: (value: any) => void,onConfirm?: (value: any) => void}>;
   };
+  actions?: TableActions;
   onRowClick?: (row: any) => void;
 
   styles?: TableStyles;
