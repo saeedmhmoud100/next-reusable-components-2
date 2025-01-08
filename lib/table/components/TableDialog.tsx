@@ -25,7 +25,6 @@ export function TableDialog({ type, row }: TableDialogProps) {
   const { config } = useTable();
 
   const handleAction = async (data?: any) => {
-    console.log(`${type}:`, data || row);
     setOpen(false);
   };
 

@@ -75,6 +75,7 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
     },
     permissions:{
       read:true,
+      ...config.permissions,
     },
     styles: {
       table: "min-w-full bg-white rounded-lg overflow-hidden",

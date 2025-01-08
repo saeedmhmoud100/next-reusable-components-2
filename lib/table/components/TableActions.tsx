@@ -25,8 +25,6 @@ export function TableActions() {
 
   // Check create permission
   const canCreate = config.permissions?.create && config.createEnabled;
-  console.log(canCreate)
-  console.log(config.permissions)
   return (
       <div className="mb-6">
         <div className="flex sm:items-center flex-col gap-8 mb-8 justify-between my-8">

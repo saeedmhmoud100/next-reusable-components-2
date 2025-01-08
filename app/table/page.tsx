@@ -2,99 +2,28 @@
 
 import { DataTable } from '@/lib/table/components';
 import { enhanceTableConfig } from '@/lib/table/utils';
-import { Badge } from "@/components/ui/badge";
+import { tables } from './tablesConfigs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const tableConfig = enhanceTableConfig({
-  name: "product",
-  endpoint: "products",
-  itemsPerPage: 10,
-  searchEnabled: true,
-  sortEnabled: true,
-  createEnabled: true,
-  updateEnabled: true,
-  deleteEnabled: true,
-  dialogType: "sidebar",
-  booleanInputType: "switch",
-  styles: {
-    table: "w-full border-collapse bg-white",
-    header: "bg-gray-50",
-    row: "border-t border-gray-200 hover:bg-gray-50",
-    cell: "px-6 py-4 text-sm",
-    pagination:"bg-white border-t p-4 flex-col-reverse",
-    dialog:"w-[50%]"
-  },
-  permissions: {
-    create: true,
-    read: true,
-    update: true,
-    delete: true
-  },
-  columns: [
-    {
-      name: "id",
-      type: "number",
-      sortable: true,
-      editable: false,
-      width: "80px",
-      align: "left"
-    },
-    {
-      name: "name",
-      type: "text",
-      sortable: true,
-      searchable: true,
-      required: true,
-      validation: {
-        pattern: "^[A-Za-z0-9 ]+$",
-        message: "Only letters, numbers, and spaces allowed"
-      }
-    },
-    {
-      name: "rate_avg",
-      type: "number",
-      sortable: true,
-      step: 0.1,
-      label: "Rating",
-      validation: {
-        min: 0,
-        max: 5,
-        message: "Rating must be between 0 and 5"
-      }
-    },
-    {
-      key:"inStock",
-      name: "inStock",
-      type: "boolean",
-      sortable: true,
-      label: "In Stock"
-    }
-  ],
-  customComponents: {
-    Cell: {
-      inStock: ({ value }) => (
-        <Badge variant={value ? "success" : "destructive"} className="font-medium">
-          {value ? "In Stock" : "Out of Stock"}
-        </Badge>
-      ),
-      rate_avg: ({ value }) => (
-        <div className="flex items-center">
-          <span className="text-yellow-500">★</span>
-          <span className="ml-1">{value?.toFixed(1)}</span>
+export default function TablesPage() {
+    return (
+        <div className="py-10">
+            <h1 className="text-4xl font-bold tracking-tight mb-8">Data Tables</h1>
+
+            <Tabs defaultValue="products">
+                <TabsList>
+                    <TabsTrigger value="products">Products</TabsTrigger>
+                    <TabsTrigger value="users">Users</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="products">
+                    <DataTable config={enhanceTableConfig(tables.products)} />
+                </TabsContent>
+
+                <TabsContent value="users">
+                    <DataTable config={enhanceTableConfig(tables.users)} />
+                </TabsContent>
+            </Tabs>
         </div>
-      )
-    },
-    DialogTitle: {
-      create: "Add Product",
-      update: "Edit Product",
-      delete: "Remove Product"
-    }
-  }
-});
-
-export default function TableDemo() {
-  return (
-    <div className="py-10">
-      <DataTable config={tableConfig} />
-    </div>
-  );
+    );
 }

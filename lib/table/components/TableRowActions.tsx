@@ -34,7 +34,7 @@ export function TableRowActions({ row }: { row: any }) {
   if (!canUpdate && !canDelete) return null;
 
   return (
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-center gap-2">
         {canUpdate && (
             <>
               <Button
