@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Table", href: "/table" },
+  { name: "Form", href: "/form" },
 ];
 
 export function Navigation() {
