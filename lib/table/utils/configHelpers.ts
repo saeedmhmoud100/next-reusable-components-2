@@ -75,6 +75,9 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
     },
     permissions:{
       read:true,
+      create:true,
+      update:true,
+      delete:true,
       ...config.permissions,
     },
     styles: {

@@ -1,7 +1,6 @@
 "use client";
 
 import { DataTable } from '@/lib/table/components';
-import { enhanceTableConfig } from '@/lib/table/utils';
 import { tables } from './tablesConfigs';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -17,11 +16,11 @@ export default function TablesPage() {
                 </TabsList>
 
                 <TabsContent value="products">
-                    <DataTable config={enhanceTableConfig(tables.products)} />
+                    <DataTable config={tables.products} />
                 </TabsContent>
 
                 <TabsContent value="users">
-                    <DataTable config={enhanceTableConfig(tables.users)} />
+                    <DataTable config={tables.users} />
                 </TabsContent>
             </Tabs>
         </div>

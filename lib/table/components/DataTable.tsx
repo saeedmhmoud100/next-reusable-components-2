@@ -11,6 +11,7 @@ import { TableConfig } from '../types';
 import { cn } from '@/lib/utils';
 import { Card } from "@/components/ui/card";
 import { LoadingSpinner } from './LoadingSpinner';
+import {enhanceTableConfig} from "@/lib/table/utils";
 
 function DataTableContent({ className }: { className?: string }) {
     const { state, config } = useTableContext();
@@ -65,7 +66,7 @@ function DataTableContent({ className }: { className?: string }) {
 
 export function DataTable({ config, className }: { config: TableConfig; className?: string }) {
     return (
-        <TableProvider config={config}>
+        <TableProvider config={enhanceTableConfig(config)}>
             <DataTableContent className={className} />
         </TableProvider>
     );
