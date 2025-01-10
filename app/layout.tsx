@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Navigation } from '@/components/ui/navigation';
+import {ThemeProvider} from "@/lib/theme/ThemeProvider";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,11 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Navigation />
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {children}
+          <ThemeProvider>{children}</ThemeProvider>
         </main>
       </body>
     </html>

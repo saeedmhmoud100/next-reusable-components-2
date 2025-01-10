@@ -8,3 +8,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+// color picker
+// dynamic form
