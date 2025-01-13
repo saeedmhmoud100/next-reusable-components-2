@@ -15,7 +15,7 @@ export function TableHeader() {
   };
 
   return (
-    <thead className={cn("bg-gray-50", config.styles?.header)}>
+    <thead className={cn( config.styles?.header,"bg-primary-background text-primary-foreground")}>
       <tr>
         {config.columns.map((column) => (
           <th

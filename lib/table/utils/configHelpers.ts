@@ -83,7 +83,7 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
     styles: {
       table: "min-w-full bg-white rounded-lg overflow-hidden",
       header: "bg-gray-100",
-      row: "hover:bg-gray-50 transition-colors",
+      row: "transition-colors",
       cell: "p-4",
       search: "w-full max-w-sm",
       dialog: "sm:max-w-[425px]",

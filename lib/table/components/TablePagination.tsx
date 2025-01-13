@@ -51,7 +51,7 @@ export function TablePagination() {
               </div>
           )}
         </p>
-        <Pagination className={cn(config.styles?.pagination)}>
+        <Pagination className={cn("bg-primary-foreground",config.styles?.pagination)}>
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious 
