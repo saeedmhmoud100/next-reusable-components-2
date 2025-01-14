@@ -51,8 +51,8 @@ function DataTableContent({ className }: { className?: string }) {
             <div className="p-6">
                 <TableActions />
             </div>
-            <div className="rounded-md border">
-                <table className={cn("w-full", config.styles?.table)}>
+            <div className="rounded-md border ">
+                <table className={cn(config.styles?.table,"w-full bg-primary-foreground text-secondary-foreground text-foreground")}>
                     <TableHeader />
                     <TableBody />
                 </table>

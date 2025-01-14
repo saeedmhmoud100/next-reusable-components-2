@@ -22,12 +22,12 @@ export function TableBody() {
   }
 
   return (
-    <tbody className="bg-white divide-y divide-gray-200">
+    <tbody className="divide-y divide-gray-200">
       {state.data.map((row, index) => (
         <tr
           key={row.id || index}
           className={cn(
-            "hover:bg-gray-50 transition-colors",
+            "transition-colors",
             config.styles?.row
           )}
         >
@@ -38,10 +38,10 @@ export function TableBody() {
               <td
                 key={column.key}
                 className={cn(
-                  "px-6 py-4 text-sm text-gray-900 whitespace-nowrap",
+                  config.styles?.cell,
+                  "px-6 py-4 text-sm whitespace-nowrap",
                   column.align === 'center' && "text-center",
                   column.align === 'right' && "text-right",
-                  config.styles?.cell
                 )}
               >
                 {CustomCell ? (

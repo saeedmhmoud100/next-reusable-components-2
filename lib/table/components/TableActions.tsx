@@ -29,7 +29,7 @@ export function TableActions() {
       <div className="mb-6">
         <div className="flex sm:items-center flex-col gap-8 mb-8 justify-between my-8">
           <div style={{marginBottom:"20px"}}>
-            <h2 className="text-2xl font-semibold text-gray-900">{config.title}</h2>
+            <h2 className="text-2xl font-semibold">{config.title}</h2>
           </div>
           <div className="mt-4 sm:mt-0 flex items-center justify-between gap-4 my-8">
             {config.searchEnabled && <TableSearch />}
