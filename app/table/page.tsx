@@ -13,6 +13,7 @@ export default function TablesPage() {
                 <TabsList>
                     <TabsTrigger value="products">Products</TabsTrigger>
                     <TabsTrigger value="users">Users</TabsTrigger>
+                    <TabsTrigger value="categories">categories</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="products">
@@ -21,6 +22,9 @@ export default function TablesPage() {
 
                 <TabsContent value="users">
                     <DataTable config={tables.users} />
+                </TabsContent>
+                <TabsContent value="categories">
+                    <DataTable config={tables.categories} />
                 </TabsContent>
             </Tabs>
         </div>

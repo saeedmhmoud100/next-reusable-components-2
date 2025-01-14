@@ -90,6 +90,7 @@ export interface TableConfig {
   updateEnabled?: boolean;
   deleteEnabled?: boolean;
   dialogType?: DialogType;
+  baseUrl?:string;
   booleanInputType?: 'checkbox' | 'switch';
   customEndpoints?: {
     create?: string;

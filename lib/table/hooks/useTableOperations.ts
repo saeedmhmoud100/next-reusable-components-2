@@ -18,7 +18,7 @@ export function useTableOperations() {
     const isMounted = useRef(true);
 
     const getEndpoint = useCallback((type: 'get' | 'create' | 'update' | 'delete') => {
-        const baseEndpoint = `/api/${config.endpoint}`;
+        const baseEndpoint =(config?.baseUrl ? config?.baseUrl : "") + `/${config.endpoint}`;
         return config.customEndpoints?.[type] || baseEndpoint;
     }, [config.endpoint, config.customEndpoints]);
 
@@ -43,7 +43,6 @@ export function useTableOperations() {
                     sortBy: state.sortBy || undefined,
                     sortOrder: state.sortOrder
                 });
-
                 if (isMounted.current) {
                     dispatch({
                         type: 'SET_DATA',

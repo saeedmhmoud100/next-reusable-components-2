@@ -5,14 +5,14 @@ import {Badge} from "@/components/ui/badge";
 
 const productsTableConfig = enhanceTableConfig({
     name: "product",
-    endpoint: "products",
+    endpoint: "api/products",
     itemsPerPage: 10,
     searchEnabled: true,
     sortEnabled: true,
     createEnabled: true,
     updateEnabled: true,
     deleteEnabled: true,
-    dialogType: "sidebar",
+    dialogType: "modal",
     booleanInputType: "switch",
     styles: {
         table: "w-full border-collapse bg-white",
@@ -139,6 +139,7 @@ const userTableConfig = enhanceTableConfig({
     name: "user",
     title: "Users",
     endpoint: "users",
+    baseUrl:"https://jsonplaceholder.typicode.com",
     itemsPerPage: 10,
     searchEnabled: true,
     sortEnabled: true,
@@ -150,6 +151,13 @@ const userTableConfig = enhanceTableConfig({
         read: true,
         update: true,
         delete: false // Example of restricted permission
+    },
+    actions:{
+        fetch: async (endpoint, params) => {
+            const response = await fetch(`${endpoint}?${params}`);
+            const result = await response.json();
+            return {data:result,total:result.length}
+        }
     },
     columns: [
         {
@@ -192,8 +200,86 @@ const userTableConfig = enhanceTableConfig({
         }
     ]
 })
+const CategoriesTableConfig = enhanceTableConfig({
+    name: "category",
+    title: "Categories",
+    endpoint: "api/categories",
+    baseUrl:"http://192.168.1.19:8000",
+    itemsPerPage: 10,
+    searchEnabled: true,
+    sortEnabled: true,
+    createEnabled: true,
+    updateEnabled: true,
+    deleteEnabled: true,
+    permissions: {
+        create: true,
+        read: true,
+        update: true,
+        delete: true // Example of restricted permission
+    },
+    columns: [
+        {
+            name: "name",
+            type: "text",
+            sortable: true,
+            searchable: true,
+            required: true
+        },
+        {
+            name: "slug",
+            type: "text",
+            sortable: true,
+            required: true,
+        }
+    ],
+    actions: {
+        // Custom fetch implementation
+        fetch: async (endpoint, {page, searchTerm, sortBy, sortOrder}) => {
+            const params = new URLSearchParams({
+                page: page.toString(),
+                search: searchTerm || '',
+            });
+
+            const response = await fetch(`${endpoint}?${params}`);
+            const result = await response.json();
+            return result
+        },
+        create: async (data, endpoint) => {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            console.log(response)
+            return response.json();
+        },
+
+        // Custom update implementation
+        update: async (id, data, endpoint) => {
+            const response = await fetch(`${endpoint}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            return response.json();
+        },
+
+        delete: async (id, endpoint) => {
+            await fetch(`${endpoint}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                }
+            });
+        }
+    }
+})
 export const tables = {
     users: userTableConfig,
-    products:productsTableConfig
+    products:productsTableConfig,
+    categories:CategoriesTableConfig
     // Add more table configurations as needed
 };
