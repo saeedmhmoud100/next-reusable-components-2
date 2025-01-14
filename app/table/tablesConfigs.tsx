@@ -89,16 +89,16 @@ const productsTableConfig = enhanceTableConfig({
     },
     actions: {
         // Custom fetch implementation
-        fetch: async (endpoint, { page, searchTerm, sortBy, sortOrder }) => {
-            const params = new URLSearchParams({
-                page: page.toString(),
-                search: searchTerm || '',
-            });
-
-            const response = await fetch(`${endpoint}?${params}`);
-            const result = await response.json();
-            return result
-        },
+        // fetch: async (endpoint, { page, searchTerm, sortBy, sortOrder }) => {
+        //     const params = new URLSearchParams({
+        //         page: page.toString(),
+        //         search: searchTerm || '',
+        //     });
+        //
+        //     const response = await fetch(`${endpoint}?${params}`);
+        //     const result = await response.json();
+        //     return result
+        // },
 
         create: async (data, endpoint) => {
             const response = await fetch(endpoint, {
@@ -164,6 +164,7 @@ const userTableConfig = enhanceTableConfig({
             type: "number",
             sortable: true,
             editable: false,
+            searchable: true,
             width: "80px"
         },
         {
@@ -189,6 +190,7 @@ const userTableConfig = enhanceTableConfig({
             type: "select",
             sortable: true,
             required: true,
+            searchable: true,
             validation: {
                 options: [
                     {label: "Admin", value: "admin"},

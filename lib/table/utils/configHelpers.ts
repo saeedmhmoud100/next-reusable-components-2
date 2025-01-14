@@ -1,6 +1,6 @@
 "use client";
 
-import {ColumnConfig, TableConfig, TablePaginationConfig} from '../types';
+import {ColumnConfig, TableConfig, TablePaginationConfig, TableQueryParams} from '../types';
 
 export function generateLabel(key: string): string {
   return key
@@ -52,6 +52,14 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
     itemsPerPageKey: 'items_per_page'
   };
 
+  const defaultQueryParams: TableQueryParams = {
+    pageKey: 'page',
+    perPageKey: 'per_page',
+    searchKey: 'search',
+    sortByKey: 'sort_by',
+    sortOrderKey: 'sort_order'
+  };
+
   return {
     ...config,
     name,
@@ -72,6 +80,10 @@ export function enhanceTableConfig(config: Partial<TableConfig> & { name: string
       pagination: {
       ...defaultPagination,
       ...config.pagination
+    },
+    queryParams: {
+      ...defaultQueryParams,
+      ...config.queryParams
     },
     permissions:{
       read:true,

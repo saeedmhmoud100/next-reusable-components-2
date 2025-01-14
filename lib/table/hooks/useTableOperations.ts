@@ -58,11 +58,16 @@ export function useTableOperations() {
             }
 
             // Default fetch implementation
+            const queryParams = config.queryParams || {};
+
             const params = new URLSearchParams({
-                page: state.page.toString(),
-                per_page: (config.itemsPerPage || 10).toString(),
-                ...(state.searchTerm && { search: state.searchTerm }),
-                ...(state.sortBy && { sort_by: state.sortBy, sort_order: state.sortOrder })
+                [queryParams.pageKey || 'page']: state.page.toString(),
+                [queryParams.perPageKey || 'per_page']: (config.itemsPerPage || 10).toString(),
+                ...(state.searchTerm && { [queryParams.searchKey || 'search']: state.searchTerm }),
+                ...(state.sortBy && {
+                    [queryParams.sortByKey || 'sort_by']: state.sortBy,
+                    [queryParams.sortOrderKey || 'sort_order']: state.sortOrder
+                })
             });
 
             const response = await fetch(`${endpoint}?${params}`);

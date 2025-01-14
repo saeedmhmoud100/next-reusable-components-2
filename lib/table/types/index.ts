@@ -4,6 +4,14 @@ import {OperationType, TableOperations} from "@/lib/table/types/operations";
 export type DialogType = 'sidebar' | 'modal';
 export type ColumnType = 'text' | 'number' | 'boolean' | 'date' | 'select' | 'custom';
 
+
+export interface TableQueryParams {
+  pageKey?: string;
+  perPageKey?: string;
+  searchKey?: string;
+  sortByKey?: string;
+  sortOrderKey?: string;
+}
 export interface ValidationConfig {
   min?: number;
   max?: number;
@@ -119,6 +127,8 @@ export interface TableConfig {
 
   pagination?: TablePaginationConfig;
   permissions?: TablePermissions;
+  queryParams?: TableQueryParams;
+
 
 }
 
